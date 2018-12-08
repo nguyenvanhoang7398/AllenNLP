@@ -98,3 +98,4 @@ tokens = ['This', 'is', 'best', 'movie', 'ever', '!']
 predictor = SentenceClassifierPredictor(model, dataset_reader=reader)
 logits = predictor.predict(tokens)['logits']
 label_id = np.argmax(logits)
+print(model.vocab.get_token_from_index(label_id, 'labels'))
