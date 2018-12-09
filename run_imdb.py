@@ -33,8 +33,8 @@ if __name__ == "__main__":
     TRAIN_DATASET_PATH = "data/aclImdb/train/imdb_train.txt"
     TEST_DATASET_PATH = "data/aclImdb/test/imdb_test.txt"
     RANDOM_SEED = 7
-    EMBEDDING_DIM = 50
-    HIDDEN_DIM = 32
+    EMBEDDING_DIM = 100
+    HIDDEN_DIM = 128
 
     """
     compile_imdb(TRAIN_POS_INPUT_DIR, TRAIN_POS_OUTPUT, 'pos')
@@ -46,8 +46,8 @@ if __name__ == "__main__":
     """
 
     reader = ImdbDatasetReader()
-    train_dataset = reader.read(cached_path(TRAIN_DATASET_PATH))[:1000]
-    dev_dataset = reader.read(cached_path(TEST_DATASET_PATH))[:100]
+    train_dataset = reader.read(cached_path(TRAIN_DATASET_PATH))
+    dev_dataset = reader.read(cached_path(TEST_DATASET_PATH))
     # print(train_dataset[0]["tokens"], train_dataset[0]["label"])
     # raise Exception("Debugging")
     vocab = Vocabulary.from_instances(train_dataset + dev_dataset,

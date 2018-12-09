@@ -18,10 +18,10 @@ from overrides import overrides
 import torch
 from typing import Dict, List
 
-EMBEDDING_DIM = 50
-HIDDEN_DIM = 32
+EMBEDDING_DIM = 100
+HIDDEN_DIM = 128
 
-reader = StanfordSentimentTreeBankDatasetReader()
+reader = StanfordSentimentTreeBankDatasetReader(granularity='2-class')
 train_dataset = reader.read('data/stanfordSentimentTreebank/trees/train.txt')
 dev_dataset = reader.read('data/stanfordSentimentTreebank/trees/dev.txt')
 
