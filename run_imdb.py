@@ -1,6 +1,7 @@
 from readers.imdb.imdb_reader import compile_imdb, compile_imdb_pos_neg, ImdbDatasetReader
 
 from allennlp.common import JsonDict
+from allennlp.common.file_utils import cached_path
 from allennlp.data import DatasetReader, Instance
 from allennlp.data.dataset_readers.stanford_sentiment_tree_bank import StanfordSentimentTreeBankDatasetReader
 from allennlp.data.iterators.bucket_iterator import BucketIterator
@@ -35,17 +36,20 @@ if __name__ == "__main__":
     EMBEDDING_DIM = 50
     HIDDEN_DIM = 32
 
+    """
     compile_imdb(TRAIN_POS_INPUT_DIR, TRAIN_POS_OUTPUT, 'pos')
     compile_imdb(TRAIN_NEG_INPUT_DIR, TRAIN_NEG_OUTPUT, 'neg')
     compile_imdb(TEST_POS_INPUT_DIR, TEST_POS_OUTPUT, 'pos')
     compile_imdb(TEST_NEG_INPUT_DIR, TEST_NEG_OUTPUT, 'neg')
     compile_imdb_pos_neg(TRAIN_POS_OUTPUT, TRAIN_NEG_OUTPUT, TRAIN_DATASET_PATH, RANDOM_SEED)
     compile_imdb_pos_neg(TEST_POS_OUTPUT, TEST_NEG_OUTPUT, TEST_DATASET_PATH, RANDOM_SEED)
+    """
 
     reader = ImdbDatasetReader()
-    train_dataset = reader.read(TRAIN_DATASET_PATH)
-    dev_dataset = reader.read(TEST_DATASET_PATH)
-
+    train_dataset = reader.read(cached_path(TRAIN_DATASET_PATH))[:1000]
+    dev_dataset = reader.read(cached_path(TEST_DATASET_PATH))[:100]
+    # print(train_dataset[0]["tokens"], train_dataset[0]["label"])
+    # raise Exception("Debugging")
     vocab = Vocabulary.from_instances(train_dataset + dev_dataset,
                                       min_count={'tokens': 3})
     token_embedding = Embedding(num_embeddings=vocab.get_vocab_size('tokens'),
@@ -75,10 +79,12 @@ if __name__ == "__main__":
 
             output = {"logits": logits}
             if label is not None:
-                output["accuracy"] = self.accuracy(logits, label)
+                self.accuracy(logits, label)
                 output["loss"] = self.loss_function(logits, label)
 
             return output
+        def get_metrics(self, reset: bool = False) -> Dict[str, float]:
+            return {"accuracy": self.accuracy.get_metric(reset)}
 
     lstm = PytorchSeq2VecWrapper(
         torch.nn.LSTM(EMBEDDING_DIM, HIDDEN_DIM, batch_first=True))

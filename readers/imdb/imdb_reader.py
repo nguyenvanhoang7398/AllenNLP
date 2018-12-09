@@ -59,9 +59,9 @@ class ImdbDatasetReader(DatasetReader):
                 if not line:
                     continue
                 split_line = line.split(self.delimiter)
-                review = line[0] if len(line) > 0 else None
-                label = line[1] if len(line) > 1 else None
-                tokenized_review = self.tokenizer.tokenize(review).words() if review is not None else []
+                review = split_line[0] if len(split_line) > 0 else None
+                label = split_line[1] if len(split_line) > 1 else None
+                tokenized_review = self.tokenizer.tokenize(review).words() if review is not None else []  
                 instance = self.text_to_instance(tokenized_review, label)
                 if instance is not None:
                     yield instance

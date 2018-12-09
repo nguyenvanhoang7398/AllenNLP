@@ -54,10 +54,13 @@ class LstmClassifier(Model):
 
         output = {"logits": logits}
         if label is not None:
-            output["accuracy"] = self.accuracy(logits, label)
+            self.accuracy(logits, label)
             output["loss"] = self.loss_function(logits, label)
 
         return output
+
+    def get_metrics(self, reset: bool = False) -> Dict[str, float]:
+        return {"accuracy": self.accuracy.get_metric(reset)}
 
 lstm = PytorchSeq2VecWrapper(
     torch.nn.LSTM(EMBEDDING_DIM, HIDDEN_DIM, batch_first=True))
