@@ -71,7 +71,7 @@ class ImdbDatasetReader(DatasetReader):
                          tokens: List[str],
                          sentiment: str = None) -> Instance:
         review_field = TextField([Token(x) for x in tokens], self.token_indexers)
-        fields: Dict[str, Field] = {"review": review_field}
+        fields: Dict[str, Field] = {"tokens": review_field}
 
         if sentiment is not None:
             fields['label'] = LabelField(sentiment)

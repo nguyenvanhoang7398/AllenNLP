@@ -54,7 +54,7 @@ class LstmClassifier(Model):
 
         output = {"logits": logits}
         if label is not None:
-            self.accuracy(logits, label)
+            output["accuracy"] = self.accuracy(logits, label)
             output["loss"] = self.loss_function(logits, label)
 
         return output
