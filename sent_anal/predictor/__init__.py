@@ -1,0 +1,1 @@
+from .sent_anal_predictor import SentenceClassifierPredictor

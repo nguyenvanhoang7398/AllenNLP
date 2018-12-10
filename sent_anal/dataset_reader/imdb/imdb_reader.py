@@ -39,6 +39,7 @@ def compile_imdb_pos_neg(input_pos, input_neg, output_file, random_seed=None):
         for data in dataset:
             f.write(data)
 
+@DatasetReader.register("imdb_tokens")
 class ImdbDatasetReader(DatasetReader):
     def __init__(self,
                  token_indexers: Dict[str, TokenIndexer] = None,
