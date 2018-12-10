@@ -26,7 +26,6 @@
       "tokens": 3
     }
   },
-  "datasets_for_vocab_creation": ["train"],
   "iterator": {
     "type": "bucket",
     "sorting_keys": [["tokens", "num_tokens"]],
